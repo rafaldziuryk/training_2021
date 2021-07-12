@@ -15,7 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> mapEventToState(
     AuthEvent event,
   ) async* {
-     if (event is LoginEvent) {
+     if (event is AuthLoginEvent) {
       yield* loginEvent(event.user);
     }
   }
