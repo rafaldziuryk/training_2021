@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/view/screen1.dart';
+import 'package:flutter_training/view/passenger_page.dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody(this.selectedIndex, {Key? key}) : super(key: key);
@@ -10,13 +10,13 @@ class HomeBody extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (selectedIndex) {
       case 0:
-        return Screen1();
+        return PokemonsPage();
       case 1:
-        return Screen1();
+        return PokemonsPage();
       case 2:
-        return Screen1();
+        return PokemonsPage();
       default:
-        return Screen1();
+        return PokemonsPage();
     }
   }
 }
