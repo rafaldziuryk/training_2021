@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_training/features/pokemons/model/pokemon.dart';
 import 'package:http/http.dart' as http;
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -62,21 +63,5 @@ class _PokemonsPageWithPaginationState
   void dispose() {
     _pagingController.dispose();
     super.dispose();
-  }
-}
-
-class Pokemon {
-  Pokemon(this.name, this.id, this.image);
-
-  final String name;
-  final String id;
-  final String image;
-
-  factory Pokemon.fromMap(Map<String, dynamic> json) {
-    final name = json['name'];
-    final url = Uri.parse(json['url']);
-    final id = url.pathSegments.lastWhere((element) => element.isNotEmpty);
-    final photo = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png';
-    return Pokemon(name, id, photo);
   }
 }
