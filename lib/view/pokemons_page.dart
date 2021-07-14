@@ -1,17 +1,22 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_training/features/pokemons/model/pokemon.dart';
+import 'package:hive/hive.dart';
 
-class PokemonsPage extends StatelessWidget {
+class PokemonsPage extends StatefulWidget {
   const PokemonsPage({Key? key}) : super(key: key);
 
   @override
+  _PokemonsPageState createState() => _PokemonsPageState();
+}
+
+class _PokemonsPageState extends State<PokemonsPage> {
+
+  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
+    return FutureBuilder<List<Pokemon>>(
         future: getPokemons(),
         initialData: [],
-        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<List<Pokemon>> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
               return SizedBox.shrink();
@@ -29,12 +34,9 @@ class PokemonsPage extends StatelessWidget {
                 return ListView.builder(
                   itemBuilder: (context, index) {
                     final element = snapshot.data![index];
-                    final name = element['name'];
-                    final url = Uri.parse(element['url']);
-                    final id = url.pathSegments.lastWhere((element) => element.isNotEmpty);
                     return ListTile(
-                      title: Text(name),
-                      leading: Image.network('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png'),
+                      title: Text(element.name),
+                      leading: Image.network(element.image),
                     );
                   },
                   itemCount: snapshot.data?.length ?? 0,
@@ -48,11 +50,9 @@ class PokemonsPage extends StatelessWidget {
         });
   }
 
-  Future<List<dynamic>> getPokemons() async {
-    var url = Uri.parse(
-        'https://pokeapi.co/api/v2/pokemon?limit=50&offset=0');
-    var response = await http.get(url);
-    final Map<String, dynamic> parsed = json.decode(response.body);
-    return parsed['results'];
+  Future<List<Pokemon>> getPokemons() async {
+    final _pokemonBox = await Hive.openBox<Pokemon>('pokemon');
+    final pokemons = _pokemonBox.values.toList();
+    return pokemons;
   }
 }

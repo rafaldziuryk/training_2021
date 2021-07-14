@@ -1,8 +1,18 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_training/features/pokemons/model/pokemon.dart';
 import 'package:flutter_training/view/home.dart';
 import 'package:flutter_training/view/login.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart' as PathProvider;
 
-void main() {
+void main() async {
+  if (!kIsWeb) {
+    final documentsDirectory =
+        await PathProvider.getApplicationDocumentsDirectory();
+    Hive.init(documentsDirectory.path);
+  }
+  Hive.registerAdapter(PokemonAdapter());
   runApp(MyApp());
 }
 
@@ -25,9 +35,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: (settings) {
-        switch(settings.name) {
-          case "/login" : return MaterialPageRoute(builder: (BuildContext context) => LoginPage());
-          default: return MaterialPageRoute(builder: (BuildContext context) => HomePage());
+        switch (settings.name) {
+          case "/login":
+            return MaterialPageRoute(
+                builder: (BuildContext context) => LoginPage());
+          default:
+            return MaterialPageRoute(
+                builder: (BuildContext context) => HomePage());
         }
       },
       home: HomePage(),
