@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_training/features/pokemons/model/pokemon.dart';
+import 'package:flutter_training/view/pokemon_grid_item.dart';
 import 'package:hive/hive.dart';
 
 class PokemonsPage extends StatefulWidget {
@@ -10,7 +11,6 @@ class PokemonsPage extends StatefulWidget {
 }
 
 class _PokemonsPageState extends State<PokemonsPage> {
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Pokemon>>(
@@ -31,13 +31,15 @@ class _PokemonsPageState extends State<PokemonsPage> {
                   child: Text(snapshot.error.toString()),
                 );
               } else if (snapshot.hasData) {
-                return ListView.builder(
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 300,
+                      childAspectRatio: 1,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20),
                   itemBuilder: (context, index) {
                     final element = snapshot.data![index];
-                    return ListTile(
-                      title: Text(element.name),
-                      leading: Image.network(element.image),
-                    );
+                    return PokemonGridItem(element);
                   },
                   itemCount: snapshot.data?.length ?? 0,
                 );
