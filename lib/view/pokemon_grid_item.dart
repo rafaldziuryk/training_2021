@@ -99,7 +99,6 @@ class _PokemonGridItemState extends State<PokemonGridItem> {
                   ],
                 ),
               ),
-              Positioned(child: AnimatedIcon(icon: AnimatedIcons.add_event,))
             ],
           ),
         ),
